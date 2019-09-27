@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<p>Click the button</p>
+
+<button onclick="myFunction()">get cities</button>
+
+<div class="col-lg-12" id="mySelect">
+    <!-- Insert my list here -->
+</div>
+<h1 id = "5"></h1>
+
+<button onclick="getCityWeather()">get weather</button>
+
+<script>
+    function myFunction() {
+        $.ajax({
+            url: "http://localhost:8085/api/cities",
+            type: "GET",
+            success: function (resp) {
+                // var resp = JSON.parse(response);
+                var listDiv = document.getElementById('mySelect');
+                var select=document.createElement('select');
+                select.id = 'lur';
+                for (var i = 0; i < resp.length; ++i) {
+                    var option=document.createElement('option');
+                    option.innerHTML = resp[i][1];
+                    option.value = resp[i][0];
+                    option.selected = true;
+                    select.appendChild(option);
+                }
+                listDiv.appendChild(select);
+            },
+            error: function (xhr, status) {
+                alert("error");
+            }
+        });
+    }
+
+    function getCityWeather() {
+        var e = document.getElementById("lur");
+        var asd = e.options[e.selectedIndex];
+        alert(index);
+        $.ajax({
+            url: "http://localhost:8085/api/cities/"+index.value,
+            type: "GET",
+            success: function (resp) {
+                alert(resp);
+                var val = document.getElementById('5');
+                val = resp.weather.minTemp + " " + resp.weather.maxTemp;
+                document.getElementById('5').innerHTML  = val;
+            },
+            error: function (xhr, status) {
+                alert("error");
+            }
+        });
+    }
+</script>
+</body>
+</html>
